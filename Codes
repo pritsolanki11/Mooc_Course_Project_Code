@@ -1,0 +1,253 @@
+Build a User Configuration Manager :-  
+
+
+
+def add_setting(settings, setting):
+    key, value = setting
+    key = key.lower()
+    value = value.lower()
+
+    if key in settings:
+        return f"Setting '{key}' already exists! Cannot add a new setting with this name."
+
+    settings[key] = value
+    return f"Setting '{key}' added with value '{value}' successfully!"
+
+
+def update_setting(settings, setting):
+    key, value = setting
+    key = key.lower()
+    value = value.lower()
+
+    if key in settings:
+        settings[key] = value
+        return f"Setting '{key}' updated to '{value}' successfully!"
+
+    return f"Setting '{key}' does not exist! Cannot update a non-existing setting."
+
+
+def delete_setting(settings, key):
+    key = key.lower()
+
+    if key in settings:
+        del settings[key]
+        return f"Setting '{key}' deleted successfully!"
+
+    return "Setting not found!"
+
+
+def view_settings(settings):
+    if not settings:
+        return "No settings available."
+
+    result = "Current User Settings:\n"
+
+    for key, value in settings.items():
+        result += f"{key.capitalize()}: {value}\n"
+
+    return result
+
+
+test_settings = {
+    "theme": "dark",
+    "language": "english",
+    "notifications": "enabled"
+}
+
+
+Build a Budget App :-
+
+
+def create_spend_chart(categories):
+    spending = []
+
+    for category in categories:
+        total = 0
+
+        for item in category.ledger:
+            if item['amount'] < 0:
+                total += abs(item['amount'])
+
+        spending.append(total)
+
+    total_spending = sum(spending)
+
+    percentages = []
+
+    for amount in spending:
+        percentage = (amount / total_spending) * 100
+        percentage = int(percentage // 10) * 10
+        percentages.append(percentage)
+
+    result = "Percentage spent by category\n"
+
+    # Bar chart
+    for level in range(100, -1, -10):
+        result += f"{level:>3}| "
+
+        for percentage in percentages:
+            if percentage >= level:
+                result += "o  "
+            else:
+                result += "   "
+
+        result += "\n"
+
+    # Horizontal line
+    result += "    " + "-" * (3 * len(categories) + 1) + "\n"
+
+    # Category names
+    max_length = max(len(category.name) for category in categories)
+
+    for i in range(max_length):
+        result += "     "
+
+        for category in categories:
+            if i < len(category.name):
+                result += category.name[i] + "  "
+            else:
+                result += "   "
+
+        result += "\n"
+
+    return result.rstrip("\n")
+
+
+
+Build a Polygon Area Calculator :- 
+
+
+
+import math
+class Rectangle:
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+    def set_width(self, width):
+        self.width = width
+
+    def set_height(self, height):
+        self.height = height
+
+    def get_area(self):
+        return self.width * self.height
+
+    def get_perimeter(self):
+        return 2 * (self.width + self.height)
+
+    def get_diagonal(self):
+        return math.sqrt(self.width ** 2 + self.height ** 2)
+
+    def get_picture(self):
+        if self.width > 50 or self.height > 50:
+            return "Too big for picture."
+
+        picture = ""
+        for _ in range(self.height):
+            picture += "*" * self.width + "\n"
+        return picture
+
+    def get_amount_inside(self, shape):
+        return (self.width // shape.width) * (self.height // shape.height)
+
+    def __str__(self):
+        return f"Rectangle(width={self.width}, height={self.height})"
+
+
+class Square(Rectangle):
+    def __init__(self, side):
+        super().__init__(side, side)
+
+    def set_width(self, side):
+        self.width = side
+        self.height = side
+
+    def set_height(self, side):
+        self.width = side
+        self.height = side
+
+    def set_side(self, side):
+        self.width = side
+        self.height = side
+
+    def __str__(self):
+        return f"Square(side={self.width})"
+
+
+
+
+Build a Hash Table :- 
+
+
+
+
+class HashTable:
+    def __init__(self):
+        self.collection = {}
+
+    def hash(self, key):
+        return sum(ord(char) for char in key)
+
+    def add(self, key, value):
+        hash_value = self.hash(key)
+
+        if hash_value not in self.collection:
+            self.collection[hash_value] = {}
+
+        self.collection[hash_value][key] = value
+
+    def remove(self, key):
+        hash_value = self.hash(key)
+
+        if hash_value in self.collection:
+            if key in self.collection[hash_value]:
+                del self.collection[hash_value][key]
+
+                # Remove empty nested dictionary
+                if not self.collection[hash_value]:
+                    del self.collection[hash_value]
+
+    def lookup(self, key):
+        hash_value = self.hash(key)
+
+        if hash_value in self.collection:
+            return self.collection[hash_value].get(key)
+
+        return None
+
+
+
+Implement the Tower of Hanoi Algorithm :- 
+
+
+
+
+def hanoi_solver(n):
+    A = list(range(n, 0, -1))
+    B = []
+    C = []
+    
+    moves = []
+
+    def record_state():
+        moves.append(f"{A} {B} {C}")
+
+    record_state()
+
+    def move(disks, source, auxiliary, target):
+        if disks == 1:
+            target.append(source.pop())
+            record_state()
+        else:
+            move(disks - 1, source, target, auxiliary)
+            target.append(source.pop())
+            record_state()
+            move(disks - 1, auxiliary, source, target)
+
+    move(n, A, B, C)
+
+    return "\n".join(moves)
+
+
+
